@@ -1,0 +1,19 @@
+{
+  "name": "orderfood",
+  "version": "1.0.0",
+  "description": "nodepro_mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "orderfood",
+    "node",
+    "mongo"
+  ],
+  "author": "liuhailong",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
