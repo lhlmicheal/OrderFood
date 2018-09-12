@@ -4,15 +4,22 @@
 
 //system module
 var express = require('express');
-var session = require('express-session');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+var favicon = require('serve-favicon');
 var path = require('path');
+
+//third module
+var session = require('express-session');
+var flash = require('connect-flash');
 
 //business module
 var mainMenu = require('./routes/mainmenu');
 var user = require('./routes/user');
 
-//third module
-var flash = require('connect-flash');
+//setting module
+var setting = require('./setting');
 
 var app = express();
 
@@ -26,10 +33,37 @@ var server = app.listen(3000, 'localhost', function () {
     console.log('listen at http://%s,%s', host, port);
 });
 
+//flash是session(会话)中存储信息中的特殊区域。消息写入到 flash 中，在跳转目标页中显示该消息,再次刷新,flash就没有了。
+app.use(session({
+    secret: setting.session.cookieSecret,  //加密
+    key: setting.db.dbName, //cookie nam
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: true,
+}));
+app.use(flash());
+
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+//设置静态文件路径
+app.use(express.static(path.join(__dirname, 'public')));
+
 //将主菜单业务处理的路由单独写在一个文件(模块中)，通过app.use引用。
-app.use(flash);
 app.use(mainMenu);
 app.use(user);
+
+if (app.get('env') === 'development') {
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            title: 'error',
+            message: err.message,
+            error: err
+        });
+    });
+}
 
 app.use(specialCodeHandle);
 app.use(errorHandle);
@@ -48,16 +82,11 @@ function errorHandle(err, req, res, next) {
         return next(err); //自定义的错误处理句柄，并没有处理这个error，express内置的缺省错误处理句柄在最后兜底.
     }
     res.status(err.status || 500);
-    res.render('error', { error: err });
-}
-
-if (app.get('env') === 'development') {
-    app.use(function (err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+    res.render('error', {
+        title: 'error',
+        error: err,
+        message: {}
     });
 }
+
 module.exports = app;

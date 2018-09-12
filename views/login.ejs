@@ -1,28 +1,12 @@
-<html>
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>
-        <%- title %>
-    </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="../public/css/common.css" />
-</head>
-
+<%- include templateheader %>
 <body>
-    <form method="POST">
-        Account:
-        <br>
-        <input type="text" name='name'>
-        <br> 
-        Passward:
-        <br> 
-        <input type="password" name='passward'>
-        <br>
+<div> 
+</div>
+    <form method="post">
+        Account:<input type="text" name='name'> <br/>
+        Passward:<input type="password" name='passward'> <br/>
         <input type="submit" value='Submit'>
-        <br>
     </form>
 </body>
 
-</html>
+<%- include templatefooter %>
