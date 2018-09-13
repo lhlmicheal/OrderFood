@@ -2,3 +2,11 @@ h1 {
     color: rgb(255, 94, 0);
     font-family: 'Courier New', Courier, monospace;
 }
+div.tips {
+    color: darkgreen;
+    font-size: 18pt; 
+}
+div.error {
+    color: darkred;
+    font-size: 18pt;
+}

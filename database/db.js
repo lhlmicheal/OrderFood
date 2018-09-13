@@ -9,6 +9,8 @@ db.open(function (err, db) {
         throw err;
     }
     console.log('connnect db');
+    db.close();
+    console.log('close db');
 });
 
 module.exports = db;
